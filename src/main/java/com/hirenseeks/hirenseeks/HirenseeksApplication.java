@@ -3,8 +3,6 @@ package com.hirenseeks.hirenseeks;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.hirenseeks.hirenseeks.user.User;
-
 import io.github.cdimascio.dotenv.Dotenv;
 
 @SpringBootApplication

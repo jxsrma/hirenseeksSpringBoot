@@ -2,17 +2,27 @@ package com.hirenseeks.hirenseeks.user;
 
 import java.util.*;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
+// import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 
 @Service
 public class UserService {
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+    // private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository) { //, PasswordEncoder passwordEncoder
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
+        // this.passwordEncoder = passwordEncoder;
+    }
+
+    // public String login(String username, String password) {
+    //     return "User signed-in successfully!.";
+    // }
+    
+
+    public Object getCurrentUsername() {
+        return true;
     }
 
     public Map<String, Object> userSignUp(User newUser) {
@@ -38,7 +48,7 @@ public class UserService {
             return response;
         }
 
-        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+        // newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         User savingUser = new User(newUser.getUserName(), newUser.getPassword(), newUser.getFirstName(),
                 newUser.getLastName(),
                 newUser.getEmail(), newUser.getContactNumber());
@@ -65,36 +75,35 @@ public class UserService {
 
         Map<String, Object> userInfo = new HashMap<>();
 
-        userInfo.put("id",u.getId());
-        userInfo.put("userName",u.getUserName());
-        userInfo.put("firstName",u.getFirstName());
-        userInfo.put("lastName",u.getLastName());
-        userInfo.put("email",u.getEmail());
-        userInfo.put("dob",u.getDob());
-        userInfo.put("contactNumber",u.getContactNumber());
-        userInfo.put("address",u.getAddress());
-        userInfo.put("city",u.getCity());
-        userInfo.put("state",u.getState());
-        userInfo.put("country",u.getCountry());
-        userInfo.put("bio",u.getBio());
-        userInfo.put("skills",u.getSkills());
-        userInfo.put("projects",u.getProjects());
-        userInfo.put("linkGithub",u.getLinkGithub());
-        userInfo.put("linkLinkedIn",u.getLinkLinkedIn());
-        userInfo.put("linkExtra",u.getLinkExtra());
-        userInfo.put("is_recruiter",u.getIsRecruiter());
+        userInfo.put("id", u.getId());
+        userInfo.put("userName", u.getUserName());
+        userInfo.put("firstName", u.getFirstName());
+        userInfo.put("lastName", u.getLastName());
+        userInfo.put("email", u.getEmail());
+        userInfo.put("dob", u.getDob());
+        userInfo.put("contactNumber", u.getContactNumber());
+        userInfo.put("address", u.getAddress());
+        userInfo.put("city", u.getCity());
+        userInfo.put("state", u.getState());
+        userInfo.put("country", u.getCountry());
+        userInfo.put("bio", u.getBio());
+        userInfo.put("skills", u.getSkills());
+        userInfo.put("projects", u.getProjects());
+        userInfo.put("linkGithub", u.getLinkGithub());
+        userInfo.put("linkLinkedIn", u.getLinkLinkedIn());
+        userInfo.put("linkExtra", u.getLinkExtra());
+        userInfo.put("is_recruiter", u.getIsRecruiter());
 
         return userInfo;
     }
 
-    
     public Map<String, Object> updateUser(User user) {
 
         Map<String, Object> response = new HashMap<>();
 
         System.out.println(user.toString());
 
-        User oldData = userRepository.findUserByUserName(user.getUserName());
+        // User oldData = userRepository.findUserByUserName(user.getUserName());
 
         if (userRepository.existsByUserName(user.getUserName())) {
             response.put("success", false);
@@ -118,17 +127,5 @@ public class UserService {
 
         return null;
     }
-
-    public String login(String username, String password) {
-
-        boolean exists = userRepository.existsByUserName(username);
-
-        if (exists) {
-            return "Login Success";
-        }
-
-        return "Login Failed";
-    }
-
 
 }
