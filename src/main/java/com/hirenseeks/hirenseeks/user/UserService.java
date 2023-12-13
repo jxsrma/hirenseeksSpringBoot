@@ -2,24 +2,19 @@ package com.hirenseeks.hirenseeks.user;
 
 import java.util.*;
 
-// import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 
 @Service
 public class UserService {
     private final UserRepository userRepository;
-    // private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) { //, PasswordEncoder passwordEncoder
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        // this.passwordEncoder = passwordEncoder;
     }
 
     // public String login(String username, String password) {
-    //     return "User signed-in successfully!.";
+    // return "User signed-in successfully!.";
     // }
-    
 
     public Object getCurrentUsername() {
         return true;
@@ -48,7 +43,7 @@ public class UserService {
             return response;
         }
 
-        // newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+        newUser.setPassword(Encrypt.encryptPassword(newUser.getPassword()));
         User savingUser = new User(newUser.getUserName(), newUser.getPassword(), newUser.getFirstName(),
                 newUser.getLastName(),
                 newUser.getEmail(), newUser.getContactNumber());

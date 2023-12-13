@@ -50,6 +50,9 @@ ALTER TABLE user
     MODIFY COLUMN isSuperuser TINYINT DEFAULT 0,
     MODIFY COLUMN signUpDate DATE DEFAULT (CURRENT_DATE);
 
+ALTER TABLE user
+    MODIFY COLUMN password LONGTEXT NOT NULL;
+
 INSERT INTO user (
     password, lastLogin, isSuperuser, userName, compName, firstName, lastName,
     email, bio, signUpDate, isStaff, isActive, isRecruiter, countryCode,
@@ -69,3 +72,27 @@ VALUES
     '9876543210', '1985-05-15', '456 Oak St', 'City2', 'State2', 'Country2',
     'Python, JavaScript, CSS', 'Project3, Project4', 'https://github.com/user2', 'https://linkedin.com/user2', 'Additional Link2', 'Job3, Job4'
 );
+
+
+-- Job Table
+CREATE TABLE job (
+    id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    jobDate datetime DEFAULT CURRENT_TIMESTAMP,
+    title VARCHAR(50),
+    jobPos VARCHAR(50),
+    description VARCHAR(300),
+    timing VARCHAR(50),
+	reqSkill TEXT,
+    expLevel VARCHAR(50),
+    postedBy VARCHAR(50),
+    location VARCHAR(50),
+    appliedPeople TEXT
+);
+
+drop table job;
+
+INSERT INTO job (jobDate, title, jobPos, `desc`, timing, reqSkill, expLevel, postedBy, location, appliedPeople)
+VALUES
+('2023-12-09 16:30:00', 'Software Engineer', 'Developer', 'Exciting software development role', 'Full-time', 'Java, Spring Boot', 'Mid-Level', 'John Doe', 'City ABC', 'Alice, Bob, Charlie'),
+('2023-12-10 10:00:00', 'Data Analyst', 'Analyst', 'Analyzing and interpreting complex data sets', 'Part-time', 'SQL, Python', 'Entry-Level', 'Jane Smith', 'City XYZ', 'David, Emma, Frank'),
+('2023-12-11 14:45:00', 'Product Manager', 'Manager', 'Leading product development teams', 'Full-time', 'Product Management', 'Senior-Level', 'Bob Johnson', 'City PQR', 'Grace, Henry, Isabel');
