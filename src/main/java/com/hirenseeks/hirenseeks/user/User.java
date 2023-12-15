@@ -1,8 +1,8 @@
 package com.hirenseeks.hirenseeks.user;
 
-import java.util.Date;
+import java.util.*;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -54,14 +54,14 @@ public class User {
 
     @JsonIgnore
     @Column(name = "isStaff")
-    private Boolean isStaff = false;
+    private Boolean is_staff = false;
 
     @JsonIgnore
     @Column(name = "isActive")
-    private Boolean isActive = true;
+    private Boolean is_active = true;
 
     @Column(name = "isRecruiter")
-    private Boolean isRecruiter = false;
+    private Boolean is_recruiter = false;
 
     @Column(name = "countryCode")
     private String countryCode;
@@ -113,5 +113,58 @@ public class User {
         this.email = eMail;
         this.contactNumber = contact;
     }
+
+    public void setAppliedJobsTo(List<String> appliedJobsToList) {
+        this.appliedJobsTo = String.join(",", appliedJobsToList);
+    }
+
+    public List<String> getAppliedJobsTo() {
+        return Arrays.asList(this.appliedJobsTo.split(","));
+    }
+
+    public Map<String, Object> userData() {
+        Map<String, Object> data = new HashMap<>();
+        data.put("id", this.id);
+        data.put("userName", this.userName);
+        data.put("firstName", this.firstName);
+        data.put("lastName", this.lastName);
+        data.put("email", this.email);
+        System.out.println(this.dob);
+        data.put("dob", this.dob);
+        data.put("contactNumber", this.contactNumber);
+        data.put("address", this.address);
+        data.put("city", this.city);
+        data.put("state", this.state);
+        data.put("country", this.country);
+        data.put("bio", this.bio);
+        data.put("skills", this.skills);
+        data.put("projects", this.projects);
+        data.put("linkGithub", this.linkGithub);
+        data.put("linkLinkedIn", this.linkLinkedIn);
+        data.put("linkExtra", this.linkExtra);
+        data.put("is_recruiter", this.is_recruiter);
+        return data;
+    }
+    public void setSkills(List<String> skillList) {
+        this.skills = String.join("','", skillList);
+        this.skills = "['" + this.skills + "']";
+    }
+
+    public List<String> getSkillsList() {
+        String s = this.skills;
+        s = s.substring(2, s.length() - 2);
+        return Arrays.asList(s.split("','"));
+    }
+    public void setProjects(List<String> skillList) {
+        this.projects = String.join("','", skillList);
+        this.projects = "['" + this.projects + "']";
+    }
+
+    public List<String> getProjectsList() {
+        String p = this.projects;
+        p = p.substring(2, p.length() - 2);
+        return Arrays.asList(p.split("','"));
+    }
+
 
 }

@@ -17,7 +17,6 @@ public class AuthenticationService {
 
     public Map<String, Object> authenticate(
             User userData, HttpServletRequest request) {
-        // Implement your authentication logic (e.g., check against database)
         User userOptional = new User();
         boolean flag = false;
         Map<String, Object> response = new HashMap<>();
@@ -39,12 +38,11 @@ public class AuthenticationService {
             session.setAttribute("username", userOptional.getUserName());
             response.put("success", true);
             userOptional.setPassword(null);
-            response.put("User", userService.getUsers(userOptional.getUserName()));
+            response.put("userData", userService.getUsers(userOptional.getUserName()));
         } else {
             response.put("success", false);
             response.put("error", "Username or Password Wrong");
         }
-
         return response;
     }
 }
