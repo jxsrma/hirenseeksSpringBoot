@@ -129,7 +129,6 @@ public class User {
         data.put("firstName", this.firstName);
         data.put("lastName", this.lastName);
         data.put("email", this.email);
-        System.out.println(this.dob);
         data.put("dob", this.dob);
         data.put("contactNumber", this.contactNumber);
         data.put("address", this.address);

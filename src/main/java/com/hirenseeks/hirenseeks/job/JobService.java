@@ -68,12 +68,10 @@ public class JobService {
             jobSave.setLocation(jobRequest.getLocation());
             jobSave.setJobDate(new Date());
 
-            System.out.println(jobSave.toString());
 
             jobRepository.save(jobSave);
             response.put("success", true);
             response.put("data", jobSave);
-            System.out.println(response.toString());
 
             return response;
         } catch (Exception e) {
@@ -183,7 +181,6 @@ public class JobService {
             }
 
             Job job = jobRepository.findJobById(id);
-            System.out.println(job.toString());
             List<String> applicants = new ArrayList<>(job.getAppliedPeople());
 
             if (applicants.contains(user.getId() + "")) {

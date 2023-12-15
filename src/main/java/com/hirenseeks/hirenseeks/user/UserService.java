@@ -42,8 +42,6 @@ public class UserService {
             User savingUser = new User(newUser.getUserName(), newUser.getPassword(), newUser.getFirstName(),
                     newUser.getLastName(),
                     newUser.getEmail(), newUser.getContactNumber());
-            System.out.println(newUser);
-            System.out.println(savingUser);
             userRepository.save(savingUser);
 
             response.put("User Name", savingUser.getUserName());
@@ -116,7 +114,6 @@ public class UserService {
             userInfo.put("lastName", u.getLastName());
             userInfo.put("email", u.getEmail());
             userInfo.put("dob", formattedDate);
-            System.out.println(formattedDate);
             userInfo.put("contactNumber", u.getContactNumber());
             userInfo.put("address", u.getAddress());
             userInfo.put("city", u.getCity());
@@ -143,7 +140,6 @@ public class UserService {
         Map<String, Object> response = new HashMap<>();
         try {
 
-            System.out.println(user.toString());
 
             HttpSession session = request.getSession(false);
             if (session == null) {
@@ -191,7 +187,6 @@ public class UserService {
             oldUserData.setLinkLinkedIn(user.getLinkLinkedIn());
             oldUserData.setLinkExtra(user.getLinkExtra());
 
-            System.out.println(oldUserData.toString());
             userRepository.save(oldUserData);
 
             response.put("success", true);
