@@ -68,7 +68,6 @@ public class JobService {
             jobSave.setLocation(jobRequest.getLocation());
             jobSave.setJobDate(new Date());
 
-
             jobRepository.save(jobSave);
             response.put("success", true);
             response.put("data", jobSave);
@@ -240,6 +239,33 @@ public class JobService {
             response.put("success", false);
             return response;
         }
+    }
+
+    public Map<String, Object> deleteJob(Long id, HttpServletRequest request) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            HttpSession session = request.getSession(false);
+            if (session == null) {
+                response.put("success", false);
+                return response;
+            }
+            String username = (String) (session.getAttribute("username"));
+            User user = userRepository.findUserByUserName(username);
+
+            if (!user.getIs_recruiter()) {
+                response.put("message", "User Cannot Delete Jobs");
+                return response;
+            }
+            jobRepository.deleteById(id);
+            response.put("success", true);
+
+            return response;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            response.put("success", false);
+            return response;
+        }
+
     }
 
 }

@@ -75,6 +75,10 @@ VALUES
 
 
 -- Job Table
+use hirenseeks;
+
+drop table hirenseeks.job;
+
 CREATE TABLE job (
     id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     jobDate datetime DEFAULT CURRENT_TIMESTAMP,
@@ -89,10 +93,31 @@ CREATE TABLE job (
     appliedPeople TEXT
 );
 
-drop table job;
-
-INSERT INTO job (jobDate, title, jobPos, `desc`, timing, reqSkill, expLevel, postedBy, location, appliedPeople)
+INSERT INTO job (jobDate, title, jobPos, description, timing, reqSkill, expLevel, postedBy, location)
 VALUES
-('2023-12-09 16:30:00', 'Software Engineer', 'Developer', 'Exciting software development role', 'Full-time', 'Java, Spring Boot', 'Mid-Level', 'John Doe', 'City ABC', 'Alice, Bob, Charlie'),
-('2023-12-10 10:00:00', 'Data Analyst', 'Analyst', 'Analyzing and interpreting complex data sets', 'Part-time', 'SQL, Python', 'Entry-Level', 'Jane Smith', 'City XYZ', 'David, Emma, Frank'),
-('2023-12-11 14:45:00', 'Product Manager', 'Manager', 'Leading product development teams', 'Full-time', 'Product Management', 'Senior-Level', 'Bob Johnson', 'City PQR', 'Grace, Henry, Isabel');
+    ('2023-11-28 09:30:00', 'Software Engineer', 'SDE - 1', 'Exciting Software Engineer Opportunity', '8', '[\'Java\',\'Algorithm\',\'Computer Science\']', '2', 'Hacker00619', 'Remote'),
+    ('2023-12-01 10:15:00', 'Frontend Developer', 'UI/UX Designer', 'Creative Frontend Developer Needed', '9', '[\'HTML\',\'CSS\',\'JavaScript\',\'React\']', '3', 'Hacker00619', 'San Francisco'),
+    ('2023-12-03 11:00:00', 'Data Analyst', 'Data Science Intern', 'Data Analyst Internship Position', '20', '[\'Python\',\'Data Analysis\',\'Statistics\']', '1', 'jash', 'New York'),
+    ('2023-12-05 11:45:00', 'Machine Learning Engineer', 'AI Specialist', 'Machine Learning Expert Wanted', '10', '[\'Python\',\'Machine Learning\',\'Deep Learning\']', '4', 'Hacker00619', 'London'),
+    ('2023-12-08 12:30:00', 'Full Stack Developer', 'Senior Developer', 'Full Stack Developer Opening', '8', '[\'Java\',\'JavaScript\',\'Node.js\',\'MongoDB\']', '5', 'Hacker00619', 'Berlin'),
+    ('2023-12-10 13:15:00', 'Network Administrator', 'Security Analyst', 'Network Security Specialist Position', '9', '[\'Networking\',\'Security\',\'Firewalls\']', '3', 'Hacker00619', 'Tokyo'),
+    ('2023-12-12 14:00:00', 'Business Analyst', 'Market Researcher', 'Business Analyst Position Open', '8', '[\'Market Research\',\'Business Analysis\']', '2', 'jash', 'Singapore'),
+    ('2023-12-15 14:45:00', 'iOS Developer', 'Mobile App Developer', 'iOS Developer Wanted', '10', '[\'Swift\',\'iOS\',\'Mobile Development\']', '4', 'Hacker00619', 'New Delhi'),
+    ('2023-12-17 15:30:00', 'Cloud Architect', 'AWS Specialist', 'Cloud Architect Opening', '8', '[\'AWS\',\'Cloud Computing\',\'Architecture\']', '6', 'Hacker00619', 'Seattle'),
+    ('2023-12-19 16:15:00', 'DevOps Engineer', 'Automation Specialist', 'DevOps Engineer Position', '9', '[\'Docker\',\'Kubernetes\',\'CI/CD\']', '4', 'Hacker00619', 'Sydney'),
+    ('2023-12-22 17:00:00', 'Game Developer', 'Unity Programmer', 'Exciting Game Developer Role', '8', '[\'Unity\',\'Game Development\',\'C#\']', '3', 'jash', 'Los Angeles'),
+    ('2023-12-24 17:45:00', 'Blockchain Developer', 'Smart Contract Developer', 'Blockchain Developer Needed', '9', '[\'Blockchain\',\'Smart Contracts\',\'Ethereum\']', '5', 'Hacker00619', 'Toronto'),
+    ('2023-12-27 18:30:00', 'AI Researcher', 'Deep Learning Scientist', 'AI Researcher Position', '8', '[\'AI\',\'Machine Learning\',\'Research\']', '8', 'Hacker00619', 'Berlin'),
+    ('2023-12-29 19:15:00', 'Computer Vision Engineer', 'Image Processing Specialist', 'Computer Vision Engineer Role', '9', '[\'Computer Vision\',\'Image Processing\']', '7', 'Hacker00619', 'Paris'),
+    ('2024-01-01 20:00:00', 'Graphic Designer', 'UI/UX Artist', 'Graphic Designer Wanted', '8', '[\'Graphic Design\',\'UI/UX\',\'Adobe Creative Suite\']', '3', 'jash', 'Barcelona'),
+    ('2024-01-03 20:45:00', 'Android Developer', 'Mobile App Developer', 'Android Developer Position', '10', '[\'Android\',\'Java\',\'Mobile Development\']', '5', 'Hacker00619', 'Mumbai'),
+    ('2024-01-06 21:30:00', 'Software QA Engineer', 'Quality Assurance Specialist', 'QA Engineer Opening', '8', '[\'QA\',\'Testing\',\'Automated Testing\']', '4', 'Hacker00619', 'Singapore'),
+    ('2024-01-08 22:15:00', 'UX Designer', 'User Experience Specialist', 'UX Designer Role', '9', '[\'UX\',\'User Experience\',\'Prototyping\']', '6', 'jash', 'San Francisco'),
+    ('2024-01-11 23:00:00', 'Database Administrator', 'SQL Specialist', 'Database Administrator Position', '8', '[\'SQL\',\'Database\',\'Performance Tuning\']', '7', 'Hacker00619', 'London'),
+    ('2024-01-13 23:45:00', 'IT Support Specialist', 'Help Desk Technician', 'IT Support Specialist Role', '9', '[\'IT Support\',\'Troubleshooting\',\'Network\']', '5', 'Hacker00619', 'New York'),
+    ('2024-01-16 00:30:00', 'SEO Specialist', 'Search Engine Optimizer', 'SEO Specialist Position', '8', '[\'SEO\',\'Digital Marketing\',\'Keyword Research\']', '3', 'Hacker00619', 'Berlin'),
+    ('2024-01-18 01:15:00', 'Technical Writer', 'Documentation Specialist', 'Technical Writer Role', '9', '[\'Technical Writing\',\'Documentation\',\'Communication\']', '5', 'jash', 'Tokyo'),
+    ('2024-01-21 02:00:00', 'Network Engineer', 'Cisco Certified Specialist', 'Network Engineer Position', '8', '[\'Networking\',\'Cisco\',\'Routing and Switching\']', '6', 'Hacker00619', 'Seattle'),
+    ('2024-01-23 02:45:00', 'Business Development Manager', 'Sales Executive', 'Business Development Manager Role', '9', '[\'Business Development\',\'Sales\',\'Client Acquisition\']', '7', 'Hacker00619', 'Sydney'),
+    ('2024-01-26 03:30:00', 'Project Manager', 'Agile Project Lead', 'Project Manager Position', '8', '[\'Project Management\',\'Agile\',\'Scrum\']', '9', 'jash', 'Los Angeles'),
+    ('2024-01-28 04:15:00', 'Technical Support Engineer', 'Help Desk Support', 'Technical Support Engineer Role', '9', '[\'Technical Support\',\'Customer Service\',\'Troubleshooting\']', '5', 'Hacker00619', 'Toronto');

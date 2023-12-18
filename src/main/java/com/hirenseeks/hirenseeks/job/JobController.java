@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
@@ -58,6 +57,11 @@ public class JobController {
     public Map<String, Object> userAppliedJobs(HttpServletRequest request) {
         return jobService.userAppliedJobs(request);
 
+    }
+
+    @GetMapping("/deleteJob/{id}")
+    public Map<String, Object> deleteJob(@PathVariable Long id, HttpServletRequest request) {
+        return jobService.deleteJob(id, request);
     }
 
 }
