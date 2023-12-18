@@ -6,6 +6,8 @@ import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.hirenseeks.hirenseeks.response.CustomResponse;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
@@ -15,27 +17,23 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
+    CustomResponse customResponse;
+
     public Map<String, Object> userSignUp(User newUser) {
         Map<String, Object> response = new HashMap<>();
 
         try {
 
             if (userRepository.existsByUserName(newUser.getUserName())) {
-                response.put("success", false);
-                response.put("error", "User name Taken");
-                return response;
+                return customResponse.returnSuccessFalseResponse("User name Taken");
             }
 
             if (userRepository.existsByEmail(newUser.getEmail())) {
-                response.put("success", false);
-                response.put("error", "Email already Exist");
-                return response;
+                return customResponse.returnSuccessFalseResponse("Email already Exist");
             }
 
             if (userRepository.existsByContactNumber(newUser.getContactNumber())) {
-                response.put("success", false);
-                response.put("error", "Mobile already Exist");
-                return response;
+                return customResponse.returnSuccessFalseResponse("Mobile already Exist");
             }
 
             newUser.setPassword(Encrypt.encryptPassword(newUser.getPassword()));
@@ -54,8 +52,7 @@ public class UserService {
             return response;
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            response.put("success", false);
-            return response;
+            return customResponse.returnSuccessFalseResponse();
         }
     }
 
@@ -64,27 +61,22 @@ public class UserService {
     }
 
     public Map<String, Object> currUser(HttpServletRequest request) {
-        Map<String, Object> response = new HashMap<>();
         try {
             HttpSession session = request.getSession(false);
             if (session != null) {
                 String username = (String) session.getAttribute("username");
                 if (username != null) {
-                    response.put("User", username);
+                    return customResponse.returnSuccessTrueResponse("User", username);
                 }
-            } else {
-                response.put("User", null);
             }
-            return response;
+            return customResponse.returnUserNullResponse();
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            response.put("success", false);
-            return response;
+            return customResponse.returnSuccessFalseResponse();
         }
     }
 
     public Map<String, Object> userData(HttpServletRequest request) {
-        Map<String, Object> response = new HashMap<>();
         try {
             HttpSession session = request.getSession(false);
             String username = (String) session.getAttribute("username");
@@ -92,13 +84,11 @@ public class UserService {
             return user.userData();
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            response.put("success", false);
-            return response;
+            return customResponse.returnSuccessFalseResponse();
         }
     }
 
     public Map<String, Object> getUsers(String userName) {
-        Map<String, Object> response = new HashMap<>();
         try {
             Map<String, Object> userInfo = new HashMap<>();
             User u = userRepository.findUserByUserName(userName);
@@ -130,46 +120,38 @@ public class UserService {
             return userInfo;
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            response.put("success", false);
-            return response;
+            return customResponse.returnSuccessFalseResponse();
         }
     }
 
     public Map<String, Object> updateUser(User user, HttpServletRequest request) {
 
-        Map<String, Object> response = new HashMap<>();
         try {
-
 
             HttpSession session = request.getSession(false);
             if (session == null) {
-                response.put("success", false);
-                return response;
+                return customResponse.returnUserNullResponse();
             }
             String username = (String) (session.getAttribute("username"));
             User oldUserData = userRepository.findUserByUserName(username);
 
             if (!username.equals(user.getUserName()) && userRepository.existsByUserName(user.getUserName())) {
-                response.put("success", false);
-                response.put("error", "Username Taken");
-                return response;
+                return customResponse.returnSuccessFalseResponse("User name Taken");
             } else {
                 oldUserData.setUserName(user.getUserName());
                 session.invalidate();
             }
             if (!oldUserData.getEmail().equals(user.getEmail()) && userRepository.existsByEmail(user.getEmail())) {
-                response.put("success", false);
-                response.put("error", "Email Taken");
-                return response;
+                return customResponse.returnSuccessFalseResponse("Email already Exist");
+
             } else {
                 oldUserData.setEmail(user.getEmail());
             }
 
             if (!oldUserData.getContactNumber().equals(user.getContactNumber())
                     && userRepository.existsByContactNumber(user.getContactNumber())) {
-                response.put("success", false);
-                response.put("error", "Contact Taken");
-                return response;
+                return customResponse.returnSuccessFalseResponse("Mobile already Exist");
+
             } else {
                 oldUserData.setContactNumber(user.getContactNumber());
             }
@@ -189,29 +171,23 @@ public class UserService {
 
             userRepository.save(oldUserData);
 
-            response.put("success", true);
-            return response;
+            return customResponse.returnSuccessTrueResponse();
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            response.put("success", false);
-            return response;
+            return customResponse.returnSuccessFalseResponse();
         }
     }
 
     public Map<String, Object> logout(HttpServletRequest request) {
-        Map<String, Object> response = new HashMap<>();
         try {
             HttpSession session = request.getSession(false);
             if (session != null) {
                 session.invalidate();
             }
-            response.put("success", true);
-            response.put("User", "None: Logged Out");
-            return response;
+            return customResponse.returnSuccessTrueResponse("User", null);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            response.put("success", false);
-            return response;
+            return customResponse.returnSuccessFalseResponse();
         }
     }
 

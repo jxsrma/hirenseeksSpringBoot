@@ -1,9 +1,8 @@
-package com.hirenseeks.hirenseeks.job;
+package com.hirenseeks.hirenseeks.response;
 
 import java.util.*;
 
-public class JobResponse {
-
+public class CustomResponse {
     public Map<String, Object> returnSuccessTrueResponse() {
         Map<String, Object> response = new HashMap<>();
         response.put("success", true);
@@ -55,13 +54,6 @@ public class JobResponse {
         Map<String, Object> response = new HashMap<>();
         response.put("success", false);
         response.put("message", "Recruiter cannot perform this action");
-        return response;
-    }
-
-    public Map<String, Object> returnUserAlreadyAppliedResponse() {
-        Map<String, Object> response = new HashMap<>();
-        response.put("success", false);
-        response.put("error", "Already Applied");
         return response;
     }
 

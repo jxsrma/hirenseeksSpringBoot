@@ -5,6 +5,7 @@ import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.hirenseeks.hirenseeks.response.CustomResponse;
 import com.hirenseeks.hirenseeks.user.User;
 import com.hirenseeks.hirenseeks.user.UserRepository;
 
@@ -17,7 +18,7 @@ public class JobService {
     UserRepository userRepository;
     @Autowired
     JobRepository jobRepository;
-    JobResponse jobResponse;
+    CustomResponse customResponse;
 
     public List<Map<String, Object>> getJobs() {
         List<Job> jobList = new ArrayList<>(jobRepository.findAll());
@@ -32,10 +33,10 @@ public class JobService {
     public Map<String, Object> getJob(Long id) {
         try {
             Job job = jobRepository.findJobById(id);
-            return jobResponse.returnSuccessTrueResponse("data", job.getJob());
+            return customResponse.returnSuccessTrueResponse("data", job.getJob());
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return jobResponse.returnSuccessFalseResponse();
+            return customResponse.returnSuccessFalseResponse();
         }
     }
 
@@ -43,13 +44,13 @@ public class JobService {
         try {
             HttpSession session = request.getSession(false);
             if (session == null) {
-                return jobResponse.returnUserNullResponse();
+                return customResponse.returnUserNullResponse();
             }
             String username = (String) (session.getAttribute("username"));
             User user = userRepository.findUserByUserName(username);
 
             if (!user.getIs_recruiter()) {
-                return jobResponse.returnNonRecruterResponse();
+                return customResponse.returnNonRecruterResponse();
             }
             Job jobSave = new Job();
             jobSave.setPostedBy(username);
@@ -64,10 +65,10 @@ public class JobService {
 
             jobRepository.save(jobSave);
 
-            return jobResponse.returnSuccessTrueResponse("data", jobSave);
+            return customResponse.returnSuccessTrueResponse("data", jobSave);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return jobResponse.returnSuccessFalseResponse();
+            return customResponse.returnSuccessFalseResponse();
         }
     }
 
@@ -75,16 +76,16 @@ public class JobService {
         try {
             HttpSession session = request.getSession(false);
             if (session == null) {
-                return jobResponse.returnUserNullResponse();
+                return customResponse.returnUserNullResponse();
             }
             String username = (String) (session.getAttribute("username"));
             List<Job> allJobs = new ArrayList<>(jobRepository.findAllByPostedBy(username));
 
-            return jobResponse.returnSuccessTrueResponse("Job", allJobs);
+            return customResponse.returnSuccessTrueResponse("Job", allJobs);
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return jobResponse.returnSuccessFalseResponse();
+            return customResponse.returnSuccessFalseResponse();
 
         }
     }
@@ -108,20 +109,20 @@ public class JobService {
         try {
             HttpSession session = request.getSession(false);
             if (session == null) {
-                return jobResponse.returnUserNullResponse();
+                return customResponse.returnUserNullResponse();
             }
             String username = (String) (session.getAttribute("username"));
             User user = userRepository.findUserByUserName(username);
 
             if (user.getIs_recruiter()) {
-                return jobResponse.returnNonUserResponse();
+                return customResponse.returnNonUserResponse();
             }
 
             Job job = jobRepository.findJobById(id);
             List<String> applicants = new ArrayList<>(job.getAppliedPeople());
 
             if (applicants.contains(user.getId() + "")) {
-                return jobResponse.returnUserAlreadyAppliedResponse();
+                return customResponse.returnSuccessFalseResponse("Already Applied");
             }
 
             // Job
@@ -135,10 +136,10 @@ public class JobService {
             user.setAppliedJobsTo(userAppliedJobs);
             userRepository.save(user);
 
-            return jobResponse.returnSuccessTrueResponse("user applied", username);
+            return customResponse.returnSuccessTrueResponse("user applied", username);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return jobResponse.returnSuccessFalseResponse();
+            return customResponse.returnSuccessFalseResponse();
 
         }
     }
@@ -147,13 +148,13 @@ public class JobService {
         try {
             HttpSession session = request.getSession(false);
             if (session == null) {
-                return jobResponse.returnUserNullResponse();
+                return customResponse.returnUserNullResponse();
             }
             String username = (String) (session.getAttribute("username"));
             User user = userRepository.findUserByUserName(username);
 
             if (user.getIs_recruiter()) {
-                return jobResponse.returnNonUserResponse();
+                return customResponse.returnNonUserResponse();
             }
 
             Job job = jobRepository.findJobById(id);
@@ -169,12 +170,12 @@ public class JobService {
                 user.setAppliedJobsTo(userAppliedJobs);
                 userRepository.save(user);
 
-                return jobResponse.returnSuccessTrueResponse();
+                return customResponse.returnSuccessTrueResponse();
             }
-            return jobResponse.returnSuccessFalseResponse("User was Not Applied to the job");
+            return customResponse.returnSuccessFalseResponse("User was Not Applied to the job");
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return jobResponse.returnSuccessFalseResponse();
+            return customResponse.returnSuccessFalseResponse();
         }
     }
 
@@ -182,13 +183,13 @@ public class JobService {
         try {
             HttpSession session = request.getSession(false);
             if (session == null) {
-                return jobResponse.returnUserNullResponse();
+                return customResponse.returnUserNullResponse();
             }
             String username = (String) (session.getAttribute("username"));
             User user = userRepository.findUserByUserName(username);
 
             if (user.getIs_recruiter()) {
-                return jobResponse.returnNonUserResponse();
+                return customResponse.returnNonUserResponse();
             }
 
             List<String> appliedJobList = new ArrayList<>(user.getAppliedJobsTo());
@@ -200,10 +201,10 @@ public class JobService {
                     jobList.add(jobData.getJob());
                 }
             }
-            return jobResponse.returnSuccessTrueResponse("Jobs", jobList);
+            return customResponse.returnSuccessTrueResponse("Jobs", jobList);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return jobResponse.returnSuccessFalseResponse();
+            return customResponse.returnSuccessFalseResponse();
 
         }
     }
@@ -212,20 +213,20 @@ public class JobService {
         try {
             HttpSession session = request.getSession(false);
             if (session == null) {
-                return jobResponse.returnUserNullResponse();
+                return customResponse.returnUserNullResponse();
             }
             String username = (String) (session.getAttribute("username"));
             User user = userRepository.findUserByUserName(username);
 
             if (!user.getIs_recruiter() && user.getUserName() != username) {
-                return jobResponse.returnSuccessFalseResponse("User Cannot Delete Jobs");
+                return customResponse.returnSuccessFalseResponse("User Cannot Delete Jobs");
             }
             jobRepository.deleteById(id);
 
-            return jobResponse.returnSuccessTrueResponse();
+            return customResponse.returnSuccessTrueResponse();
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return jobResponse.returnSuccessFalseResponse();
+            return customResponse.returnSuccessFalseResponse();
 
         }
 
