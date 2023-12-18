@@ -17,6 +17,7 @@ public class JobService {
     UserRepository userRepository;
     @Autowired
     JobRepository jobRepository;
+    JobResponse jobResponse;
 
     public List<Map<String, Object>> getJobs() {
         List<Job> jobList = new ArrayList<>(jobRepository.findAll());
@@ -29,33 +30,26 @@ public class JobService {
     }
 
     public Map<String, Object> getJob(Long id) {
-        Map<String, Object> response = new HashMap<>();
         try {
             Job job = jobRepository.findJobById(id);
-            response.put("success", true);
-            response.put("data", job.getJob());
-            return response;
+            return jobResponse.returnSuccessTrueResponse("data", job.getJob());
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            response.put("success", false);
-            return response;
+            return jobResponse.returnSuccessFalseResponse();
         }
     }
 
     public Map<String, Object> postJob(JobRequest jobRequest, HttpServletRequest request) {
-        Map<String, Object> response = new HashMap<>();
         try {
             HttpSession session = request.getSession(false);
             if (session == null) {
-                response.put("success", false);
-                return response;
+                return jobResponse.returnUserNullResponse();
             }
             String username = (String) (session.getAttribute("username"));
             User user = userRepository.findUserByUserName(username);
 
             if (!user.getIs_recruiter()) {
-                response.put("message", "User Cannot Post Jobs");
-                return response;
+                return jobResponse.returnNonRecruterResponse();
             }
             Job jobSave = new Job();
             jobSave.setPostedBy(username);
@@ -69,36 +63,29 @@ public class JobService {
             jobSave.setJobDate(new Date());
 
             jobRepository.save(jobSave);
-            response.put("success", true);
-            response.put("data", jobSave);
 
-            return response;
+            return jobResponse.returnSuccessTrueResponse("data", jobSave);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            response.put("success", false);
-            return response;
+            return jobResponse.returnSuccessFalseResponse();
         }
     }
 
     public Map<String, Object> jobPostedBy(HttpServletRequest request) {
-        Map<String, Object> response = new HashMap<>();
         try {
             HttpSession session = request.getSession(false);
             if (session == null) {
-                response.put("success", false);
-                return response;
+                return jobResponse.returnUserNullResponse();
             }
             String username = (String) (session.getAttribute("username"));
-
             List<Job> allJobs = new ArrayList<>(jobRepository.findAllByPostedBy(username));
 
-            response.put("Job", allJobs);
+            return jobResponse.returnSuccessTrueResponse("Job", allJobs);
 
-            return response;
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            response.put("success", false);
-            return response;
+            return jobResponse.returnSuccessFalseResponse();
+
         }
     }
 
@@ -118,28 +105,23 @@ public class JobService {
     }
 
     public Map<String, Object> apply(Long id, HttpServletRequest request) {
-        Map<String, Object> response = new HashMap<>();
         try {
             HttpSession session = request.getSession(false);
             if (session == null) {
-                response.put("success", false);
-                return response;
+                return jobResponse.returnUserNullResponse();
             }
             String username = (String) (session.getAttribute("username"));
             User user = userRepository.findUserByUserName(username);
 
             if (user.getIs_recruiter()) {
-                response.put("message", "Recruiter cannot apply to jobs");
-                return response;
+                return jobResponse.returnNonUserResponse();
             }
 
             Job job = jobRepository.findJobById(id);
             List<String> applicants = new ArrayList<>(job.getAppliedPeople());
 
             if (applicants.contains(user.getId() + "")) {
-                response.put("success", false);
-                response.put("error", "Already Applied");
-                return response;
+                return jobResponse.returnUserAlreadyAppliedResponse();
             }
 
             // Job
@@ -153,30 +135,25 @@ public class JobService {
             user.setAppliedJobsTo(userAppliedJobs);
             userRepository.save(user);
 
-            response.put("success", true);
-            response.put("user applied", username);
-            return response;
+            return jobResponse.returnSuccessTrueResponse("user applied", username);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            response.put("success", false);
-            return response;
+            return jobResponse.returnSuccessFalseResponse();
+
         }
     }
 
     public Map<String, Object> cancelJob(Long id, HttpServletRequest request) {
-        Map<String, Object> response = new HashMap<>();
         try {
             HttpSession session = request.getSession(false);
             if (session == null) {
-                response.put("success", false);
-                return response;
+                return jobResponse.returnUserNullResponse();
             }
             String username = (String) (session.getAttribute("username"));
             User user = userRepository.findUserByUserName(username);
 
             if (user.getIs_recruiter()) {
-                response.put("message", "Recruiter cannot perfom this action");
-                return response;
+                return jobResponse.returnNonUserResponse();
             }
 
             Job job = jobRepository.findJobById(id);
@@ -192,34 +169,26 @@ public class JobService {
                 user.setAppliedJobsTo(userAppliedJobs);
                 userRepository.save(user);
 
-                response.put("success", true);
-                return response;
+                return jobResponse.returnSuccessTrueResponse();
             }
-
-            response.put("success", false);
-            response.put("error", "User was Not Applied to the job");
-            return response;
+            return jobResponse.returnSuccessFalseResponse("User was Not Applied to the job");
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            response.put("success", false);
-            return response;
+            return jobResponse.returnSuccessFalseResponse();
         }
     }
 
     public Map<String, Object> userAppliedJobs(HttpServletRequest request) {
-        Map<String, Object> response = new HashMap<>();
         try {
             HttpSession session = request.getSession(false);
             if (session == null) {
-                response.put("success", false);
-                return response;
+                return jobResponse.returnUserNullResponse();
             }
             String username = (String) (session.getAttribute("username"));
             User user = userRepository.findUserByUserName(username);
 
             if (user.getIs_recruiter()) {
-                response.put("message", "Recruiter cannot perfom this action");
-                return response;
+                return jobResponse.returnNonUserResponse();
             }
 
             List<String> appliedJobList = new ArrayList<>(user.getAppliedJobsTo());
@@ -231,39 +200,33 @@ public class JobService {
                     jobList.add(jobData.getJob());
                 }
             }
-            response.put("success", true);
-            response.put("Jobs", jobList);
-            return response;
+            return jobResponse.returnSuccessTrueResponse("Jobs", jobList);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            response.put("success", false);
-            return response;
+            return jobResponse.returnSuccessFalseResponse();
+
         }
     }
 
     public Map<String, Object> deleteJob(Long id, HttpServletRequest request) {
-        Map<String, Object> response = new HashMap<>();
         try {
             HttpSession session = request.getSession(false);
             if (session == null) {
-                response.put("success", false);
-                return response;
+                return jobResponse.returnUserNullResponse();
             }
             String username = (String) (session.getAttribute("username"));
             User user = userRepository.findUserByUserName(username);
 
-            if (!user.getIs_recruiter()) {
-                response.put("message", "User Cannot Delete Jobs");
-                return response;
+            if (!user.getIs_recruiter() && user.getUserName() != username) {
+                return jobResponse.returnSuccessFalseResponse("User Cannot Delete Jobs");
             }
             jobRepository.deleteById(id);
-            response.put("success", true);
 
-            return response;
+            return jobResponse.returnSuccessTrueResponse();
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            response.put("success", false);
-            return response;
+            return jobResponse.returnSuccessFalseResponse();
+
         }
 
     }
