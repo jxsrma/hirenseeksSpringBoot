@@ -1,6 +1,5 @@
 package com.hirenseeks.hirenseeks.user;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,38 +17,31 @@ public class UserService {
     UserRepository userRepository;
 
     CustomResponse customResponse;
+    UserResponse userResponse;
 
-    public Map<String, Object> userSignUp(User newUser) {
-        Map<String, Object> response = new HashMap<>();
+    public Map<String, Object> userSignUp(UserLogin userLogin) {
 
         try {
 
-            if (userRepository.existsByUserName(newUser.getUserName())) {
+            if (userRepository.existsByUserName(userLogin.getUserName())) {
                 return customResponse.returnSuccessFalseResponse("User name Taken");
             }
 
-            if (userRepository.existsByEmail(newUser.getEmail())) {
+            if (userRepository.existsByEmail(userLogin.getEmail())) {
                 return customResponse.returnSuccessFalseResponse("Email already Exist");
             }
 
-            if (userRepository.existsByContactNumber(newUser.getContactNumber())) {
+            if (userRepository.existsByContactNumber(userLogin.getContactNumber())) {
                 return customResponse.returnSuccessFalseResponse("Mobile already Exist");
             }
 
-            newUser.setPassword(Encrypt.encryptPassword(newUser.getPassword()));
-            User savingUser = new User(newUser.getUserName(), newUser.getPassword(), newUser.getFirstName(),
-                    newUser.getLastName(),
-                    newUser.getEmail(), newUser.getContactNumber());
+            userLogin.setPassword(Encrypt.encryptPassword(userLogin.getPassword()));
+            User savingUser = new User(userLogin.getUserName(), userLogin.getPassword(), userLogin.getFirstName(),
+                    userLogin.getLastName(),
+                    userLogin.getEmail(), userLogin.getContactNumber());
             userRepository.save(savingUser);
+            return userResponse.getUserLoginInfo(savingUser);
 
-            response.put("User Name", savingUser.getUserName());
-            response.put("First Name", savingUser.getFirstName());
-            response.put("Last Name", savingUser.getLastName());
-            response.put("E-Mail", savingUser.getEmail());
-            response.put("Contact", savingUser.getContactNumber());
-            response.put("success", true);
-
-            return response;
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return customResponse.returnSuccessFalseResponse();
@@ -81,7 +73,7 @@ public class UserService {
             HttpSession session = request.getSession(false);
             String username = (String) session.getAttribute("username");
             User user = userRepository.findUserByUserName(username);
-            return user.userData();
+            return userResponse.getUserData(user);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return customResponse.returnSuccessFalseResponse();
@@ -90,34 +82,8 @@ public class UserService {
 
     public Map<String, Object> getUsers(String userName) {
         try {
-            Map<String, Object> userInfo = new HashMap<>();
             User u = userRepository.findUserByUserName(userName);
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            String formattedDate = "";
-            if (u.getDob() != null) {
-                formattedDate = sdf.format(u.getDob());
-            }
-
-            userInfo.put("id", u.getId());
-            userInfo.put("userName", u.getUserName());
-            userInfo.put("firstName", u.getFirstName());
-            userInfo.put("lastName", u.getLastName());
-            userInfo.put("email", u.getEmail());
-            userInfo.put("dob", formattedDate);
-            userInfo.put("contactNumber", u.getContactNumber());
-            userInfo.put("address", u.getAddress());
-            userInfo.put("city", u.getCity());
-            userInfo.put("state", u.getState());
-            userInfo.put("country", u.getCountry());
-            userInfo.put("bio", u.getBio());
-            userInfo.put("skills", u.getSkills());
-            userInfo.put("projects", u.getProjects());
-            userInfo.put("linkGithub", u.getLinkGithub());
-            userInfo.put("linkLinkedIn", u.getLinkLinkedIn());
-            userInfo.put("linkExtra", u.getLinkExtra());
-            userInfo.put("is_recruiter", u.getIs_recruiter());
-
-            return userInfo;
+            return userResponse.getUserInfo(u);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return customResponse.returnSuccessFalseResponse();

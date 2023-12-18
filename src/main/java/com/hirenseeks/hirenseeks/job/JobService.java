@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.hirenseeks.hirenseeks.response.CustomResponse;
 import com.hirenseeks.hirenseeks.user.User;
 import com.hirenseeks.hirenseeks.user.UserRepository;
+import com.hirenseeks.hirenseeks.user.UserResponse;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -19,6 +20,7 @@ public class JobService {
     @Autowired
     JobRepository jobRepository;
     CustomResponse customResponse;
+    UserResponse userResponse;
 
     public List<Map<String, Object>> getJobs() {
         List<Job> jobList = new ArrayList<>(jobRepository.findAll());
@@ -99,7 +101,8 @@ public class JobService {
         for (String string : appliedJobList) {
             if (!string.equals(" ")) {
                 User user = userRepository.findUserById(Long.parseLong(string));
-                allUsers.add(user.userData());
+                allUsers.add(
+                        userResponse.getUserData(user));
             }
         }
         return allUsers;

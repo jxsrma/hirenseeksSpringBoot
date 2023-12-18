@@ -28,8 +28,8 @@ public class UserController {
     }
 
     @PostMapping(path = "/signup")
-    public Map<String, Object> signUp(@RequestBody User newUser) {
-        return userService.userSignUp(newUser);
+    public Map<String, Object> signUp(@RequestBody UserLogin userLogin) {
+        return userService.userSignUp(userLogin);
     }
 
     @CrossOrigin
