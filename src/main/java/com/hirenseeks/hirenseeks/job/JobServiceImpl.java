@@ -19,7 +19,7 @@ public class JobServiceImpl implements JobService {
     UserRepository userRepository;
     @Autowired
     JobRepository jobRepository;
-    CustomResponse customResponse;
+    CustomResponse customResponse = new CustomResponse();
     UserResponse userResponse;
 
     public List<Map<String, Object>> getJobs() {
@@ -225,6 +225,7 @@ public class JobServiceImpl implements JobService {
                 return customResponse.returnSuccessFalseResponse("User Cannot Delete Jobs");
             }
             jobRepository.deleteById(id);
+            jobRepository.flush();
 
             return customResponse.returnSuccessTrueResponse();
         } catch (Exception e) {

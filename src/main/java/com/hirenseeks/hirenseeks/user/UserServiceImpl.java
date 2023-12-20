@@ -16,8 +16,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepository;
 
-    CustomResponse customResponse;
-    UserResponse userResponse;
+    CustomResponse customResponse = new CustomResponse();
+    UserResponse userResponse = new UserResponse();
 
     public Map<String, Object> userSignUp(UserLogin userLogin) {
 
@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
             userLogin.setPassword(Encrypt.encryptPassword(userLogin.getPassword()));
             User savingUser = new User(userLogin.getUserName(), userLogin.getPassword(), userLogin.getFirstName(),
                     userLogin.getLastName(),
-                    userLogin.getEmail(), userLogin.getContactNumber());
+                    userLogin.getEmail(), userLogin.getContactNumber(), new Date());
             userRepository.save(savingUser);
             return userResponse.getUserLoginInfo(savingUser);
 
