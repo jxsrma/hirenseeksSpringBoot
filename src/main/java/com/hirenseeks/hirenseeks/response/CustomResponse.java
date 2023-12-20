@@ -29,10 +29,10 @@ public class CustomResponse {
         return response;
     }
 
-    public Map<String, Object> returnSuccessFalseResponse(String message) {
+    public Map<String, Object> returnSuccessFalseResponse(String error) {
         Map<String, Object> response = new HashMap<>();
         response.put("success", false);
-        response.put("error", message);
+        response.put("error", error);
         return response;
     }
 
