@@ -105,13 +105,14 @@ public class User {
     public User() {
     }
 
-    public User(String username, String password, String fName, String lName, String eMail, String contact) {
+    public User(String username, String password, String fName, String lName, String eMail, String contact, Date signUpDate) {
         this.userName = username;
         this.password = password;
         this.firstName = fName;
         this.lastName = lName;
         this.email = eMail;
         this.contactNumber = contact;
+        this.signUpDate = signUpDate;
     }
 
     public void setAppliedJobsTo(List<String> appliedJobsToList) {
