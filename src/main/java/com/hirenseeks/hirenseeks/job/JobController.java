@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 @RestController
 public class JobController {
     @Autowired
-    JobService jobService;
+    JobServiceImpl jobService;
 
     @GetMapping(path = "/jobs")
     public List<Map<String, Object>> getJobs() {

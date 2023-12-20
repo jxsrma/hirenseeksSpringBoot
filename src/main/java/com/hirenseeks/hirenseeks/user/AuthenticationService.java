@@ -13,7 +13,7 @@ public class AuthenticationService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userService;
 
     public Map<String, Object> authenticate(
             User userData, HttpServletRequest request) {
