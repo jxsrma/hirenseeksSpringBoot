@@ -29,7 +29,7 @@ To run the backend locally or deploy it to a server, follow these steps:
 
 ## Important Note ⚠️
 
-This backend repository is intended to work with the front end of the original Django-based Hire-N-Seek application. If you are looking for the complete application, including the front end, please refer to the [original repository](https://github.com/mananjain31/hire-n-seeks).
+This backend repository is intended to work with the front end of the original Django-based Hire-N-Seek application. Although it has been added but if you are looking for the complete application, including the front end, please refer to the [original repository](https://github.com/mananjain31/hire-n-seeks).
 
 ## Contribution 🤝
 
