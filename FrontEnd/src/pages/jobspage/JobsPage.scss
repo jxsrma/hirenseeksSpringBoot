@@ -1,0 +1,21 @@
+@use '../../globals/global-styles.scss' as *;
+@use '../../globals/explore-jobs-bg.scss' as *;
+
+.jobs-page{
+    background-color: $explore-bg-color;
+    background-image: $explore-bg-image;
+
+    .jobs-page-section{
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        & > main {
+            display: flex;
+            gap: 2rem;
+        }
+    }
+}
+
+@media screen and (min-width : $sm) {
+    
+}

@@ -1,0 +1,75 @@
+@use '../../globals/landing-hero-bg.scss' as *;
+@use '../../globals/global-styles.scss' as *;
+
+.landing-hero {
+  // min-height: 100vh;
+  background-color: $landing-hero-bg-color; 
+  background-image: $landing-hero-bg-image;
+  font-family: 'Hero Light', sans-serif;
+  display: flex;
+  flex-direction: column;
+
+  
+  .hero {
+    display: flex;
+
+    .hero-left {
+      flex: 1;
+    }
+    .hero-right {
+      flex : 1;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      text-align: right;
+      text-shadow: black 0 0 15px;
+      
+      h1 {
+        font-size: 7vw;
+        font-weight: bolder;
+        line-height: 0.9;
+      }
+      h2 {
+        font-size: 1.8vw;
+        font-weight: bolder;
+      }
+      .join-now-btn {
+        // background-color: black;
+        // color : white;
+        // padding: .2rem;
+        margin-left: auto;
+      }
+    }
+
+  }
+}
+
+
+@media screen and (max-width: $md) {
+  .landing-hero {
+    gap: 1.5rem;
+    .hero{
+      flex-direction: column;
+      gap: 2rem;
+      
+      .hero-right {
+        text-align: center;
+        min-height: 50vh;
+        // justify-content: space-between;
+        gap: 0.8rem;
+        // text-shadow: black 0 0 15px;
+        h1 {
+          font-size: 3rem;
+        }
+        h2 {
+          font-size: 1.6rem;
+        }
+        .join-now-btn {
+          margin: auto;
+          margin-bottom: 8rem;
+        }
+      }
+    } 
+  }
+}
